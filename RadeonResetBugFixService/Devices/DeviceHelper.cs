@@ -75,6 +75,24 @@
             }
         }
 
+        public static IEnumerable<DeviceInfo> GetDisplayDevices()
+        {
+            using (var searcher = new ManagementObjectSearcher(
+                new ManagementScope(@"root\CIMV2"),
+                new ObjectQuery("SELECT * FROM Win32_PnPEntity WHERE PNPClass='Display'"),
+                new EnumerationOptions
+                {
+                    ReturnImmediately = true,
+                    Rewindable = false,
+                }))
+            {
+                foreach (ManagementObject device in searcher.Get())
+                {
+                    yield return ConvertDeviceInfo(device.Properties);
+                }
+            }
+        }
+
         public static void DisableDevice(DeviceInfo deviceInfo)
         {
             RunWithTimeout(

@@ -63,6 +63,7 @@
   <ItemGroup>
     <Compile Include="Contracts\ServiceContext.cs" />
     <Compile Include="Devices\DeviceHelper.cs" />
+    <Compile Include="Devices\DeviceReadiness.cs" />
     <Compile Include="EnvironmentHelper.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="Contracts\DeviceInfo.cs" />
@@ -99,6 +100,7 @@
     <Compile Include="Tasks\BasicTasks\LastResortDevicesRestoreTask.cs" />
     <Compile Include="Tasks\BasicTasks\ListDevicesTask.cs" />
     <Compile Include="Tasks\BasicTasks\SleepTask.cs" />
+    <Compile Include="Tasks\BasicTasks\WaitForConditionTask.cs" />
     <Compile Include="Tasks\BasicTasks\StartAudioServiceTask.cs" />
     <Compile Include="Tasks\BasicTasks\StopAudioServiceTask.cs" />
     <Compile Include="Tasks\ComplexTasks\AbstractSequentialTask.cs" />

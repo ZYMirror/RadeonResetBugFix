@@ -1,0 +1,46 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup NuGet
+        uses: NuGet/setup-nuget@v1
+
+      - name: Setup MSBuild
+        uses: microsoft/setup-msbuild@v1.1
+
+      - name: Restore packages
+        run: nuget restore RadeonResetBugFix.sln
+
+      - name: Build Release
+        run: msbuild RadeonResetBugFix.sln /m /p:Configuration=Release /p:Platform="Any CPU"
+
+      - name: Package
+        shell: pwsh
+        run: |
+          $zip = Join-Path $env:GITHUB_WORKSPACE 'RadeonResetBugFix-startup-wait-optimization.zip'
+          $files = @(
+            'RadeonResetBugFixService\bin\Release\RadeonResetBugFixService.exe',
+            'RadeonResetBugFixService\bin\Release\RadeonResetBugFixService.exe.config'
+          )
+          Compress-Archive -LiteralPath $files -DestinationPath $zip -Force
+
+      - name: Create GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: pwsh
+        run: |
+          gh release create $env:GITHUB_REF_NAME .\RadeonResetBugFix-startup-wait-optimization.zip --title "启动等待优化版" --notes-file .\docs\release-notes\v0.1.8-startup-wait.md

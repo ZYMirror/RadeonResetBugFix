@@ -6,6 +6,12 @@
 
     static class KnownDevices
     {
+        public static bool IsBasicDisplay(DeviceInfo device)
+        {
+            return device.Service.Equals("BasicDisplay", StringComparison.OrdinalIgnoreCase) ||
+                   device.Service.Equals("vga", StringComparison.OrdinalIgnoreCase);
+        }
+
         public static bool IsAmdVideo(DeviceInfo device)
         {
             return ((device.Manufacturer.Equals("AMD", StringComparison.OrdinalIgnoreCase) || device.Manufacturer.IndexOf("Advanced Micro Devices", StringComparison.OrdinalIgnoreCase) >= 0) &&
